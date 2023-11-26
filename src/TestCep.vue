@@ -5,14 +5,14 @@
       v-bind:label="label"
       v-bind:properties="{
         disabled: false,
-        outlined: true,
+        variant: variant,
         clearable: true,
-        placeholder: '',
+        placeholder: ''
       }"
       v-bind:options="{
         outputMask: '########',
         empty: null,
-        applyAfter: true,
+        applyAfter: true
       }"
     />
     v-model:
@@ -20,10 +20,10 @@
       value !== null && value !== ""
         ? value
         : value === null
-        ? "null"
-        : value === ""
-        ? "''"
-        : ""
+          ? "null"
+          : value === ""
+            ? "''"
+            : ""
     }}
   </div>
 </template>
@@ -32,12 +32,15 @@
 import Cep from "@/components/Cep.vue";
 
 export default {
+  props: {
+    variant: String
+  },
   components: {
-    "v-text-field-cep": Cep,
+    "v-text-field-cep": Cep
   },
   data: () => ({
     value: "82515260", // 1.23 or "1.23" or "" or null
-    label: "CEP (Brazilian mask)",
-  }),
+    label: "CEP (Brazilian mask)"
+  })
 };
 </script>

@@ -6,14 +6,14 @@
       v-bind:properties="{
         readonly: false,
         disabled: false,
-        outlined: false,
         clearable: true,
+        variant: variant,
         placeholder: 'YYYY-MM-DD HH:mm:ss',
-        'prepend-icon': 'mdi-calendar',
+        'prepend-icon': 'mdi-calendar'
       }"
       v-bind:options="{
         inputMask: 'YYYY-MM-DD HH:mm:ss',
-        empty: null,
+        empty: null
       }"
     />
     v-model:
@@ -21,10 +21,10 @@
       value !== null && value !== ""
         ? value + " (milliseconds)"
         : value === null
-        ? "null"
-        : value === ""
-        ? "''"
-        : ""
+          ? "null"
+          : value === ""
+            ? "''"
+            : ""
     }}
   </div>
 </template>
@@ -33,12 +33,15 @@
 import DateTime from "@/components/DateTime.vue";
 
 export default {
+  props: {
+    variant: String
+  },
   components: {
-    "v-text-field-datetime": DateTime,
+    "v-text-field-datetime": DateTime
   },
   data: () => ({
     value: "1595386800000", // Milliseconds
-    label: "DateTime",
-  }),
+    label: "DateTime"
+  })
 };
 </script>

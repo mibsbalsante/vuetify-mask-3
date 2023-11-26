@@ -8,50 +8,66 @@
     <v-card-text>
       <v-container>
         <v-row>
+          <v-col cols="4">
+            <v-select
+              label="Variant"
+              :items="[
+                'outlined',
+                'plain',
+                'underlined',
+                'filled',
+                'solo',
+                'solo-inverted',
+                'solo-filled'
+              ]"
+              v-model="variant"
+            ></v-select>
+          </v-col>
+          <v-divider />
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-money />
+            <v-text-field-money :variant="variant" />
           </v-col>
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-negative-money />
+            <v-text-field-negative-money :variant="variant" />
           </v-col>
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-percent />
+            <v-text-field-percent :variant="variant" />
           </v-col>
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-integer />
+            <v-text-field-integer :variant="variant" />
           </v-col>
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-creditcard />
+            <v-text-field-creditcard :variant="variant" />
           </v-col>
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-phonenumber />
+            <v-text-field-phonenumber :variant="variant" />
           </v-col>
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-simplemask />
+            <v-text-field-simplemask :variant="variant" />
           </v-col>
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-dotnumber />
+            <v-text-field-dotnumber :variant="variant" />
           </v-col>
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-filebase64 />
+            <v-text-field-filebase64 :variant="variant" />
           </v-col>
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-datetime />
+            <v-text-field-datetime :variant="variant" />
           </v-col>
           <v-col cols="12" sm="4" md="12">
-            <v-text-field-datetimepicker />
+            <v-text-field-datetimepicker :variant="variant" />
           </v-col>
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-cpf />
+            <v-text-field-cpf :variant="variant" />
           </v-col>
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-cnpj />
+            <v-text-field-cnpj :variant="variant" />
           </v-col>
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-cep />
+            <v-text-field-cep :variant="variant" />
           </v-col>
           <v-col cols="4" sm="4" md="4">
-            <v-text-field-yearmonthdayday />
+            <v-text-field-yearmonthdayday :variant="variant" />
           </v-col>
         </v-row>
       </v-container>
@@ -93,7 +109,12 @@ export default {
     "v-text-field-filebase64": TestFileBase64,
     "v-text-field-dotnumber": TestDotNumber,
     "v-text-field-datetimepicker": TestDateTimePicker,
-    "v-text-field-yearmonthdayday": TestYearMonthDayDay,
+    "v-text-field-yearmonthdayday": TestYearMonthDayDay
   },
+  data: function () {
+    return {
+      variant: "underlined"
+    };
+  }
 };
 </script>

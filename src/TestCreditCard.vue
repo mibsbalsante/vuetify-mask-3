@@ -8,9 +8,9 @@
         suffix: '',
         readonly: false,
         disabled: false,
-        outlined: false,
+        variant: variant,
         clearable: true,
-        placeholder: '',
+        placeholder: ''
       }"
       v-bind:options="{
         inputMask: '#### #### #### ####',
@@ -18,7 +18,7 @@
         empty: null,
         applyAfter: false,
         alphanumeric: true,
-        lowerCase: false,
+        lowerCase: false
       }"
     />
     v-model:
@@ -26,10 +26,10 @@
       value !== null && value !== ""
         ? value
         : value === null
-        ? "null"
-        : value === ""
-        ? "''"
-        : ""
+          ? "null"
+          : value === ""
+            ? "''"
+            : ""
     }}
   </div>
 </template>
@@ -38,12 +38,15 @@
 import SimpleMask from "@/components/SimpleMask.vue";
 
 export default {
+  props: {
+    variant: String
+  },
   components: {
-    "v-text-field-simplemask": SimpleMask,
+    "v-text-field-simplemask": SimpleMask
   },
   data: () => ({
     value: "1234432112344321",
-    label: "Credit Card",
-  }),
+    label: "Credit Card"
+  })
 };
 </script>

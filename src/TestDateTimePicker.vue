@@ -8,7 +8,7 @@
           v-bind:properties="{
             backgroundColor: '#EEE9E9',
             clearable: false,
-            outlined: true,
+            variant: variant,
             prependIcon: 'mdi-calendar',
             appendIcon: 'mdi-av-timer'
           }"
@@ -19,7 +19,7 @@
             locale: 'pt-BR',
             format: 'DD/MM/YYYY',
             closeOnDateClick: false,
-            useSeconds: false,
+            useSeconds: false
           }"
         />
         v-model: {{ value1 }} (milliseconds)
@@ -31,7 +31,7 @@
           v-bind:properties="{
             backgroundColor: '#EEE9E9',
             clearable: false,
-            outlined: false,
+            variant: variant,
             prependIcon: 'mdi-calendar',
             appendIcon: ''
           }"
@@ -42,7 +42,7 @@
             locale: 'en-US',
             format: 'YYYY-MM-DD',
             closeOnDateClick: false,
-            useSeconds: false,
+            useSeconds: false
           }"
         />
         v-model: {{ value2 }} (milliseconds)
@@ -54,7 +54,7 @@
           v-bind:properties="{
             backgroundColor: '',
             clearable: false,
-            outlined: false,
+            variant: variant,
             prependIcon: '',
             appendIcon: ''
           }"
@@ -65,7 +65,7 @@
             locale: 'en-US',
             format: 'YYYY-MM-DD',
             closeOnDateClick: false,
-            useSeconds: true,
+            useSeconds: true
           }"
         />
         v-model: {{ value3 }} (milliseconds)
@@ -78,16 +78,19 @@
 import DateTimePicker from "@/components/DateTimePicker.vue";
 
 export default {
+  props: {
+    variant: String
+  },
   name: "app",
   components: {
-    "v-text-field-datetimepicker": DateTimePicker,
+    "v-text-field-datetimepicker": DateTimePicker
   },
   data: () => ({
     value1: 1558220700000,
 
     value2: 1558220700000,
 
-    value3: 1558220710000,
-  }),
+    value3: 1558220710000
+  })
 };
 </script>

@@ -5,14 +5,14 @@
       v-bind:label="label"
       v-bind:properties="{
         disabled: false,
-        outlined: true,
+        variant: variant,
         clearable: true,
-        placeholder: '',
+        placeholder: ''
       }"
       v-bind:options="{
         outputMask: '##############',
         empty: null,
-        applyAfter: true,
+        applyAfter: true
       }"
     />
     v-model:
@@ -20,10 +20,10 @@
       value !== null && value !== ""
         ? value
         : value === null
-        ? "null"
-        : value === ""
-        ? "''"
-        : ""
+          ? "null"
+          : value === ""
+            ? "''"
+            : ""
     }}
   </div>
 </template>
@@ -32,12 +32,15 @@
 import Cnpj from "@/components/Cnpj.vue";
 
 export default {
+  props: {
+    variant: String
+  },
   components: {
-    "v-text-field-cnpj": Cnpj,
+    "v-text-field-cnpj": Cnpj
   },
   data: () => ({
     value: "50703512000192", // 123 or "123" or "" or null
-    label: "CNPJ (Brazilian mask)",
-  }),
+    label: "CNPJ (Brazilian mask)"
+  })
 };
 </script>

@@ -3,18 +3,18 @@
     <v-text-field-yearmonthdayday
       v-model="value"
       v-bind:label="label"
-      v-bind:placeholder= "placeholder"
+      v-bind:placeholder="placeholder"
       v-bind:properties="{
         prefix: '',
         suffix: '',
         readonly: false,
         disabled: false,
-        outlined: true,
         clearable: false,
-        persistentPlaceholder:true,
+        variant: variant,
+        persistentPlaceholder: true
       }"
       v-bind:options="{
-        empty: '',
+        empty: ''
       }"
     />
     v-model:
@@ -22,10 +22,10 @@
       value !== null && value !== ""
         ? value
         : value === null
-        ? "null"
-        : value === ""
-        ? "''"
-        : ""
+          ? "null"
+          : value === ""
+            ? "''"
+            : ""
     }}
   </div>
 </template>
@@ -34,13 +34,16 @@
 import YearMonthDayDay from "@/components/YearMonthDayDay.vue";
 
 export default {
+  props: {
+    variant: String
+  },
   components: {
-    "v-text-field-yearmonthdayday": YearMonthDayDay,
+    "v-text-field-yearmonthdayday": YearMonthDayDay
   },
   data: () => ({
     value: "",
     label: "Ano;Mes;DiaInicial;DiaFinal;",
-    placeholder: "AAAA;MM;DD;DD;",
-  }),
+    placeholder: "AAAA;MM;DD;DD;"
+  })
 };
 </script>

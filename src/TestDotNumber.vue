@@ -6,14 +6,14 @@
       v-bind:properties="{
         readonly: false,
         disabled: false,
-        outlined: false,
         clearable: true,
-        placeholder: '',
+        variant: variant,
+        placeholder: ''
       }"
       v-bind:options="{
         length: 20,
         empty: null,
-        applyAfter: false,
+        applyAfter: false
       }"
     />
     v-model:
@@ -21,10 +21,10 @@
       value !== null && value !== ""
         ? value
         : value === null
-        ? "null"
-        : value === ""
-        ? "''"
-        : ""
+          ? "null"
+          : value === ""
+            ? "''"
+            : ""
     }}
   </div>
 </template>
@@ -33,12 +33,15 @@
 import DotNumber from "@/components/DotNumber.vue";
 
 export default {
+  props: {
+    variant: String
+  },
   components: {
-    "v-text-field-dotnumber": DotNumber,
+    "v-text-field-dotnumber": DotNumber
   },
   data: () => ({
     value: "1.23.456.789", // 123 or "123" or "" or null
-    label: "Only Dot and Number",
-  }),
+    label: "Only Dot and Number"
+  })
 };
 </script>

@@ -7,21 +7,29 @@
         prefix: 'R$ ' + signal,
         readonly: false,
         disabled: disabled,
-        outlined: false,
+        variant: variant,
         clearable: true,
-        placeholder: ' ',
+        placeholder: ''
       }"
       v-bind:options="{
         locale: 'pt-BR',
         length: 11,
         precision: 2,
-        empty: null,
+        empty: null
       }"
       v-on:signal="signal = $event"
       ref="ref"
     />
     v-model:
-    {{ value !== null && value !== "" ? value : value === null ? "null" : value === "" ? "''" : "" }}<br />
+    {{
+      value !== null && value !== ""
+        ? value
+        : value === null
+          ? "null"
+          : value === ""
+            ? "''"
+            : ""
+    }}<br />
     signal: {{ signal }}
   </div>
 </template>
@@ -30,14 +38,17 @@
 import NegativeMoney from "@/components/NegativeDecimal.vue";
 
 export default {
+  props: {
+    variant: String
+  },
   components: {
-    "v-text-field-negative-money": NegativeMoney,
+    "v-text-field-negative-money": NegativeMoney
   },
   data: () => ({
     value: -123456789.0, // 1.23 or "1.23" or "" or null
     label: "Negative Money",
     disabled: false,
-    signal: "",
-  }),
+    signal: ""
+  })
 };
 </script>
