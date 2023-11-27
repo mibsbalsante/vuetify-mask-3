@@ -1,21 +1,22 @@
 <template>
-  <div>
-    <v-text-field-cpf
-      v-model="value"
-      v-bind:label="label"
-      v-bind:properties="{
-        readonly: false,
-        disabled: false,
-        variant: variant,
-        clearable: true,
-        placeholder: ''
-      }"
-      v-bind:options="{
-        outputMask: '###########',
-        empty: null,
-        applyAfter: true
-      }"
-    />
+  <v-text-field-cpf
+    v-model="value"
+    v-bind:label="label"
+    v-bind:properties="{
+      readonly: false,
+      disabled: false,
+      variant: variant,
+      persistentClear: persistentClear,
+      clearable: true,
+      placeholder: ''
+    }"
+    v-bind:options="{
+      outputMask: '###########',
+      empty: null,
+      applyAfter: true
+    }"
+  />
+  <div class="d-flex justify-space-between align-center">
     v-model:
     {{
       value !== null && value !== ""
@@ -34,7 +35,11 @@ import Cpf from "@/components/Cpf.vue";
 
 export default {
   props: {
-    variant: String
+    variant: String,
+    persistentClear: {
+      type: Boolean,
+      default: true
+    }
   },
   components: {
     "v-text-field-cpf": Cpf

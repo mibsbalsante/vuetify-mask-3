@@ -1,21 +1,22 @@
 <template>
-  <div>
-    <v-text-field-dotnumber
-      v-model="value"
-      v-bind:label="label"
-      v-bind:properties="{
-        readonly: false,
-        disabled: false,
-        clearable: true,
-        variant: variant,
-        placeholder: ''
-      }"
-      v-bind:options="{
-        length: 20,
-        empty: null,
-        applyAfter: false
-      }"
-    />
+  <v-text-field-dotnumber
+    v-model="value"
+    v-bind:label="label"
+    v-bind:properties="{
+      readonly: false,
+      disabled: false,
+      clearable: true,
+      variant: variant,
+      persistentClear: persistentClear,
+      placeholder: ''
+    }"
+    v-bind:options="{
+      length: 20,
+      empty: null,
+      applyAfter: false
+    }"
+  />
+  <div class="d-flex justify-space-between align-center">
     v-model:
     {{
       value !== null && value !== ""
@@ -34,7 +35,11 @@ import DotNumber from "@/components/DotNumber.vue";
 
 export default {
   props: {
-    variant: String
+    variant: String,
+    persistentClear: {
+      type: Boolean,
+      default: true
+    }
   },
   components: {
     "v-text-field-dotnumber": DotNumber

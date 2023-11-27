@@ -1,18 +1,19 @@
 <template>
-  <div>
-    <v-text-field-filebase64
-      v-model="value"
-      v-bind:label="label"
-      v-bind:properties="{
-        variant: variant,
-        placeholder: ' ',
-        appendIcon: 'mdi-message-image-outline'
-      }"
-      v-bind:options="{
-        acceptFile: 'image/*'
-      }"
-      v-on:fileName="fileName = $event"
-    />
+  <v-text-field-filebase64
+    v-model="value"
+    v-bind:label="label"
+    v-bind:properties="{
+      variant: variant,
+      persistentClear: persistentClear,
+      placeholder: ' ',
+      appendIcon: 'mdi-message-image-outline'
+    }"
+    v-bind:options="{
+      acceptFile: 'image/*'
+    }"
+    v-on:fileName="fileName = $event"
+  />
+  <div class="d-flex justify-space-between align-center">
     v-model:
     {{
       value !== null && value !== ""
@@ -37,7 +38,11 @@ import fileBase64 from "@/components/FileBase64.vue";
 
 export default {
   props: {
-    variant: String
+    variant: String,
+    persistentClear: {
+      type: Boolean,
+      default: true
+    }
   },
   components: {
     "v-text-field-filebase64": fileBase64

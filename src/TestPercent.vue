@@ -1,23 +1,24 @@
 <template>
-  <div>
-    <v-text-field-percent
-      v-model="value"
-      v-bind:label="label"
-      v-bind:properties="{
-        suffix: '%',
-        readonly: false,
-        disabled: false,
-        clearable: true,
-        variant: variant,
-        placeholder: ''
-      }"
-      v-bind:options="{
-        locale: 'pt-BR',
-        length: 3,
-        precision: 2,
-        empty: null
-      }"
-    />
+  <v-text-field-percent
+    v-model="value"
+    v-bind:label="label"
+    v-bind:properties="{
+      suffix: '%',
+      readonly: false,
+      disabled: false,
+      clearable: true,
+      variant: variant,
+      persistentClear: persistentClear,
+      placeholder: ''
+    }"
+    v-bind:options="{
+      locale: 'pt-BR',
+      length: 3,
+      precision: 2,
+      empty: null
+    }"
+  />
+  <div class="d-flex justify-space-between align-center">
     v-model:
     {{
       value !== null && value !== ""
@@ -36,7 +37,11 @@ import Money from "@/components/Decimal.vue";
 
 export default {
   props: {
-    variant: String
+    variant: String,
+    persistentClear: {
+      type: Boolean,
+      default: true
+    }
   },
   components: {
     "v-text-field-percent": Money

@@ -79,7 +79,11 @@ import DateTimePicker from "@/components/DateTimePicker.vue";
 
 export default {
   props: {
-    variant: String
+    variant: String,
+    persistentClear: {
+      type: Boolean,
+      default: true
+    }
   },
   name: "app",
   components: {

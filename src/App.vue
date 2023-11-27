@@ -21,7 +21,20 @@
                 'solo-filled'
               ]"
               v-model="variant"
+              hide-details
             ></v-select>
+          </v-col>
+          <v-col cols="8" class="d-flex align-center">
+            <p>
+              List of available
+              <a
+                href="https://vuetifyjs.com/en/api/v-text-field/#props"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                VTextField props
+              </a>
+            </p>
           </v-col>
           <v-divider />
           <v-col cols="4" sm="4" md="4">
@@ -54,9 +67,11 @@
           <v-col cols="4" sm="4" md="4">
             <v-text-field-datetime :variant="variant" />
           </v-col>
+          <!--
           <v-col cols="12" sm="4" md="12">
             <v-text-field-datetimepicker :variant="variant" />
           </v-col>
+          -->
           <v-col cols="4" sm="4" md="4">
             <v-text-field-cpf :variant="variant" />
           </v-col>
@@ -66,9 +81,11 @@
           <v-col cols="4" sm="4" md="4">
             <v-text-field-cep :variant="variant" />
           </v-col>
+          <!--
           <v-col cols="4" sm="4" md="4">
             <v-text-field-yearmonthdayday :variant="variant" />
           </v-col>
+          -->
         </v-row>
       </v-container>
     </v-card-text>
@@ -81,7 +98,7 @@ import TestNegativeMoney from "./TestNegativeMoney.vue";
 import TestPercent from "./TestPercent.vue";
 import TestInteger from "./TestInteger.vue";
 import TestDateTime from "./TestDateTime.vue";
-import TestDateTimePicker from "./TestDateTimePicker.vue";
+//import TestDateTimePicker from "./TestDateTimePicker.vue";
 import TestCreditCard from "./TestCreditCard.vue";
 import TestPhoneNumber from "./TestPhoneNumber.vue";
 import TestSimpleMask from "./TestSimpleMask.vue";
@@ -90,7 +107,7 @@ import TestCnpj from "./TestCnpj.vue";
 import TestCep from "./TestCep.vue";
 import TestFileBase64 from "./TestFileBase64.vue";
 import TestDotNumber from "./TestDotNumber.vue";
-import TestYearMonthDayDay from "./TestYearMonthDayDay.vue";
+//import TestYearMonthDayDay from "./TestYearMonthDayDay.vue";
 
 export default {
   name: "app",
@@ -107,9 +124,9 @@ export default {
     "v-text-field-cnpj": TestCnpj,
     "v-text-field-cep": TestCep,
     "v-text-field-filebase64": TestFileBase64,
-    "v-text-field-dotnumber": TestDotNumber,
-    "v-text-field-datetimepicker": TestDateTimePicker,
-    "v-text-field-yearmonthdayday": TestYearMonthDayDay
+    "v-text-field-dotnumber": TestDotNumber
+    //"v-text-field-datetimepicker": TestDateTimePicker,
+    //"v-text-field-yearmonthdayday": TestYearMonthDayDay
   },
   data: function () {
     return {
