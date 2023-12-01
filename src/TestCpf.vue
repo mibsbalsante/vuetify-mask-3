@@ -1,8 +1,8 @@
 <template>
   <v-text-field-cpf
-    v-model="value"
-    v-bind:label="label"
-    v-bind:properties="{
+    v-model.lazy="value"
+    :label="label"
+    :properties="{
       readonly: false,
       disabled: false,
       variant: variant,
@@ -10,10 +10,9 @@
       clearable: true,
       placeholder: ''
     }"
-    v-bind:options="{
+    :options="{
       outputMask: '###########',
-      empty: null,
-      applyAfter: true
+      empty: null
     }"
   />
   <div class="d-flex justify-space-between align-center">
@@ -46,7 +45,7 @@ export default {
   },
   data: () => ({
     value: "97702036028", // 123 or "123" or "" or null
-    label: "CPF (Brazilian mask)"
+    label: "CPF (Brazilian mask) - .lazy"
   })
 };
 </script>

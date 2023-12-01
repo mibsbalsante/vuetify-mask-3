@@ -1,39 +1,37 @@
 <template>
   <v-text-field-filebase64
     v-model="value"
-    v-bind:label="label"
-    v-bind:properties="{
+    :label="label"
+    :properties="{
       variant: variant,
       persistentClear: persistentClear,
       placeholder: ' ',
-      appendIcon: 'mdi-message-image-outline'
+      appendIcon: 'mdi-message-image-outline',
+      baseColor: value && 'success'
     }"
-    v-bind:options="{
+    :options="{
       acceptFile: 'image/*'
     }"
-    v-on:fileName="fileName = $event"
+    @fileName="fileName = $event"
   />
-  <div class="d-flex justify-space-between align-center">
-    v-model:
-    {{
-      value !== null && value !== ""
-        ? value
-        : value === null
-          ? "null"
-          : value === ""
-            ? "''"
-            : ""
-    }}<br />
+  <div class="d-flex flex-column justify-center align-space-between">
+    <p class="base64">
+      v-model:
+      {{
+        value !== null && value !== ""
+          ? value
+          : value === null
+            ? "null"
+            : value === ""
+              ? "''"
+              : ""
+      }}
+    </p>
     fileName: {{ fileName }}
   </div>
 </template>
 
 <script>
-// acceptFile:'image/*'
-// acceptFile:'application/pdf'
-// acceptFile:'image/jpeg,image/gif,image/png,application/pdf'
-// acceptFile:'image/jpeg,image/gif,image/png,application/pdf,image/x-eps'
-
 import fileBase64 from "@/components/FileBase64.vue";
 
 export default {
@@ -55,3 +53,10 @@ export default {
   })
 };
 </script>
+
+<style scoped>
+.base64 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>

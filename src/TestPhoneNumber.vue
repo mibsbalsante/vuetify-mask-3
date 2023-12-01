@@ -1,8 +1,8 @@
 <template>
   <v-text-field-simplemask
     v-model="value"
-    v-bind:label="label"
-    v-bind:properties="{
+    :label="label"
+    :properties="{
       prefix: '',
       suffix: '',
       readonly: false,
@@ -12,11 +12,10 @@
       persistentClear: persistentClear,
       placeholder: ''
     }"
-    v-bind:options="{
+    :options="{
       inputMask: '(##) #####-####',
       outputMask: '###########',
       empty: null,
-      applyAfter: false,
       alphanumeric: true,
       lowerCase: false
     }"

@@ -1,8 +1,8 @@
 <template>
   <v-text-field-percent
     v-model="value"
-    v-bind:label="label"
-    v-bind:properties="{
+    :label="label"
+    :properties="{
       suffix: '%',
       readonly: false,
       disabled: false,
@@ -11,7 +11,7 @@
       persistentClear: persistentClear,
       placeholder: ''
     }"
-    v-bind:options="{
+    :options="{
       locale: 'pt-BR',
       length: 3,
       precision: 2,
@@ -47,8 +47,13 @@ export default {
     "v-text-field-percent": Money
   },
   data: () => ({
-    value: "34.20", // 1.23 or "1.23" or "" or null
+    value: "34.2", // 1.23 or "1.23" or "" or null
     label: "Percent"
-  })
+  }),
+  watch: {
+    value: function (value) {
+      if (Number(value) > 100) this.value = "100.00";
+    }
+  }
 };
 </script>

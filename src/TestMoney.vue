@@ -1,8 +1,8 @@
 <template>
   <v-text-field-money
     v-model="value"
-    v-bind:label="label"
-    v-bind:properties="{
+    :label="label"
+    :properties="{
       prefix: 'R$',
       readonly: false,
       disabled: disabled,
@@ -11,7 +11,7 @@
       persistentClear: persistentClear,
       placeholder: ' '
     }"
-    v-bind:options="{
+    :options="{
       locale: 'pt-BR',
       length: 11,
       precision: 2,
@@ -30,8 +30,8 @@
             ? "''"
             : ""
     }}
-    <v-btn v-on:click="$refs.ref.focus()">Focus</v-btn>
-    <v-btn v-on:click="disabled = !disabled">{{
+    <v-btn @click="$refs.ref.focus()">Focus</v-btn>
+    <v-btn @click="disabled = !disabled">{{
       disabled ? "Enabled" : "Disabled"
     }}</v-btn>
   </div>

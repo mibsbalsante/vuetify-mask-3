@@ -26,23 +26,31 @@
           </v-col>
           <v-col cols="8" class="d-flex align-center">
             <p>
-              List of available
+              List of available VTextField
               <a
                 href="https://vuetifyjs.com/en/api/v-text-field/#props"
                 target="_blank"
                 rel="noopener noreferrer"
+                >props</a
               >
-                VTextField props
-              </a>
+              {{ " " }}and{{ " " }}
+              <a
+                href="https://vuetifyjs.com/en/api/v-text-field/#slots"
+                target="_blank"
+                rel="noopener noreferrer"
+                >slots</a
+              >
             </p>
           </v-col>
           <v-divider />
           <v-col cols="4" sm="4" md="4">
             <v-text-field-money :variant="variant" />
           </v-col>
+          <!--
           <v-col cols="4" sm="4" md="4">
             <v-text-field-negative-money :variant="variant" />
           </v-col>
+          -->
           <v-col cols="4" sm="4" md="4">
             <v-text-field-percent :variant="variant" />
           </v-col>
@@ -94,7 +102,7 @@
 
 <script>
 import TestMoney from "./TestMoney.vue";
-import TestNegativeMoney from "./TestNegativeMoney.vue";
+//import TestNegativeMoney from "./TestNegativeMoney.vue";
 import TestPercent from "./TestPercent.vue";
 import TestInteger from "./TestInteger.vue";
 import TestDateTime from "./TestDateTime.vue";
@@ -113,7 +121,7 @@ export default {
   name: "app",
   components: {
     "v-text-field-money": TestMoney,
-    "v-text-field-negative-money": TestNegativeMoney,
+    //"v-text-field-negative-money": TestNegativeMoney,
     "v-text-field-percent": TestPercent,
     "v-text-field-integer": TestInteger,
     "v-text-field-datetime": TestDateTime,

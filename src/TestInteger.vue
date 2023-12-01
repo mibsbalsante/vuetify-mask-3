@@ -1,8 +1,8 @@
 <template>
   <v-text-field-integer
     v-model="value"
-    v-bind:label="label"
-    v-bind:properties="{
+    :label="label"
+    :properties="{
       readonly: false,
       disabled: false,
       clearable: true,
@@ -10,11 +10,10 @@
       persistentClear: persistentClear,
       placeholder: ''
     }"
-    v-bind:options="{
+    :options="{
       inputMask: '#########',
       outputMask: '#########',
-      empty: null,
-      applyAfter: false
+      empty: null
     }"
   />
   <div class="d-flex justify-space-between align-center">

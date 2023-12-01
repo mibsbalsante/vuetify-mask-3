@@ -1,9 +1,9 @@
 <template>
   <v-text-field-yearmonthdayday
     v-model="value"
-    v-bind:label="label"
-    v-bind:placeholder="placeholder"
-    v-bind:properties="{
+    :label="label"
+    :placeholder="placeholder"
+    :properties="{
       prefix: '',
       suffix: '',
       readonly: false,
@@ -13,7 +13,7 @@
       persistentClear: persistentClear,
       persistentPlaceholder: true
     }"
-    v-bind:options="{
+    :options="{
       empty: ''
     }"
   />

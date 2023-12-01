@@ -1,8 +1,9 @@
 <template>
   <v-text-field-negative-money
     v-model="value"
-    v-bind:label="label"
-    v-bind:properties="{
+    v-model:signal="signal"
+    :label="label"
+    :properties="{
       prefix: 'R$ ' + signal,
       readonly: false,
       disabled: disabled,
@@ -11,13 +12,12 @@
       clearable: true,
       placeholder: ''
     }"
-    v-bind:options="{
+    :options="{
       locale: 'pt-BR',
       length: 11,
       precision: 2,
       empty: null
     }"
-    v-on:signal="signal = $event"
     ref="ref"
   />
   <div class="d-flex justify-space-between align-center">
@@ -50,7 +50,7 @@ export default {
     "v-text-field-negative-money": NegativeMoney
   },
   data: () => ({
-    value: -123456789.0, // 1.23 or "1.23" or "" or null
+    value: -123456789.0, // -1.23 or "-1.23" or "" or null
     label: "Negative Money",
     disabled: false,
     signal: ""

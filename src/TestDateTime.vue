@@ -1,8 +1,8 @@
 <template>
   <v-text-field-datetime
     v-model="value"
-    v-bind:label="label"
-    v-bind:properties="{
+    :label="label"
+    :properties="{
       readonly: false,
       disabled: false,
       clearable: true,
@@ -11,11 +11,15 @@
       placeholder: 'YYYY-MM-DD HH:mm:ss',
       'prepend-icon': 'mdi-calendar'
     }"
-    v-bind:options="{
+    :options="{
       inputMask: 'YYYY-MM-DD HH:mm:ss',
       empty: null
     }"
-  />
+  >
+    <template #append-inner>
+      <v-icon icon="mdi-calendar-check" color="primary" />
+    </template>
+  </v-text-field-datetime>
   <div class="d-flex justify-space-between align-center">
     v-model:
     {{
@@ -46,7 +50,7 @@ export default {
   },
   data: () => ({
     value: "1595386800000", // Milliseconds
-    label: "DateTime"
+    label: "DateTime - append-inner slot"
   })
 };
 </script>

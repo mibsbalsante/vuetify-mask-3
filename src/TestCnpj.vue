@@ -1,19 +1,18 @@
 <template>
   <v-text-field-cnpj
     v-model="value"
-    v-bind:label="label"
-    v-bind:properties="{
+    :label="label"
+    :properties="{
       disabled: false,
       variant: variant,
       persistentClear: persistentClear,
       clearable: true,
       placeholder: '',
-      icon: 'mdi-check-circle'
+      appendInnerIcon: 'mdi-check'
     }"
-    v-bind:options="{
+    :options="{
       outputMask: '##############',
-      empty: null,
-      applyAfter: true
+      empty: null
     }"
   />
   <div class="d-flex justify-space-between align-center">
@@ -46,7 +45,7 @@ export default {
   },
   data: () => ({
     value: "50703512000192", // 123 or "123" or "" or null
-    label: "CNPJ (Brazilian mask)"
+    label: "CNPJ (Brazilian mask) - icon-append-inner prop"
   })
 };
 </script>

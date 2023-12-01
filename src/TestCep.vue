@@ -1,18 +1,17 @@
 <template>
   <v-text-field-cep
     v-model="value"
-    v-bind:label="label"
-    v-bind:properties="{
+    :label="label"
+    :properties="{
       disabled: false,
       variant: variant,
       persistentClear: persistentClear,
       clearable: true,
       placeholder: ''
     }"
-    v-bind:options="{
+    :options="{
       outputMask: '########',
-      empty: null,
-      applyAfter: true
+      empty: null
     }"
   />
   <div class="d-flex justify-space-between align-center">
