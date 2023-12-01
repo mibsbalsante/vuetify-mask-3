@@ -89,7 +89,7 @@ export default {
   methods: {
     humanFormat: function (typelessValue) {
       let value = Number(typelessValue);
-      if (!Number.isNaN(value)) {
+      if (Number.isNaN(value)) {
         if (value < 0) {
           value = value * -1;
           this.$emit("update:modelValue", value);
@@ -165,20 +165,18 @@ export default {
     keyDown: function ($event) {
       this.$emit("keydown", $event);
 
-      let keyCode = $event.keyCode ? $event.keyCode : $event.which;
+      const key = $event.key;
 
-      // Positive key
-      if (keyCode === 43) {
+      if (key === "+") {
         this.$emit("update:signal", ""); // +
       }
-      // Negative key
-      if (keyCode === 45) {
+      if (key === "-") {
         this.$emit("update:signal", "-");
       }
 
       if (
-        (keyCode < 48 || keyCode > 57 || this.targetLength()) &&
-        keyCode !== 8
+        (Number.isNaN(Number(key)) || this.targetLength()) &&
+        !["Tab", "Backspace"].includes(key)
       ) {
         $event.preventDefault();
       }

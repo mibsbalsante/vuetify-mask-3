@@ -26,7 +26,7 @@
 
 <script>
 import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
+import customParseFormat from "dayjs/esm/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
 
 export default {
@@ -159,9 +159,14 @@ export default {
     keyDown: function ($event) {
       this.$emit("keydown", $event);
 
-      let keyCode = $event.keyCode ? $event.keyCode : $event.which;
+      const key = $event.key;
 
-      if ((keyCode < 48 || keyCode > 57) && keyCode !== 8) {
+      if (key === "Backspace" && this.success) {
+        this.cmpValue = this.options.empty;
+        return;
+      }
+
+      if (Number.isNaN(Number(key)) && !["Tab", "Backspace"].includes(key)) {
         $event.preventDefault();
       }
     },

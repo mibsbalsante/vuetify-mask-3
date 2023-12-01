@@ -146,12 +146,14 @@ export default {
     },
 
     keyDown: function ($event) {
-      this.$emit("keydown", $event);
+      if (!this.options.alphanumeric) {
+        this.$emit("keydown", $event);
 
-      let keyCode = $event.keyCode ? $event.keyCode : $event.which;
+        const key = $event.key;
 
-      if ((keyCode < 48 || keyCode > 57) && keyCode !== 8) {
-        $event.preventDefault();
+        if (Number.isNaN(Number(key)) && !["Tab", "Backspace"].includes(key)) {
+          $event.preventDefault();
+        }
       }
     },
 
