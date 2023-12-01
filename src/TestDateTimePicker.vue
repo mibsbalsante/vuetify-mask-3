@@ -5,21 +5,21 @@
         <v-text-field-datetimepicker
           v-model="value1"
           label="Data Hora"
-          v-bind:properties="{
+          :properties="{
             backgroundColor: '#EEE9E9',
             clearable: false,
-            outlined: true,
+            variant: variant,
             prependIcon: 'mdi-calendar',
             appendIcon: 'mdi-av-timer'
           }"
-          v-bind:options="{
+          :options="{
             tabDateTitle: 'Data',
             tabTimeTitle: 'Hora',
             tabBackgroundColor: 'green',
             locale: 'pt-BR',
             format: 'DD/MM/YYYY',
             closeOnDateClick: false,
-            useSeconds: false,
+            useSeconds: false
           }"
         />
         v-model: {{ value1 }} (milliseconds)
@@ -28,21 +28,21 @@
         <v-text-field-datetimepicker
           v-model="value2"
           label="Date Time Picker"
-          v-bind:properties="{
+          :properties="{
             backgroundColor: '#EEE9E9',
             clearable: false,
-            outlined: false,
+            variant: variant,
             prependIcon: 'mdi-calendar',
             appendIcon: ''
           }"
-          v-bind:options="{
+          :options="{
             tabDateTitle: 'Date',
             tabTimeTitle: 'Time',
             tabBackgroundColor: 'blue',
             locale: 'en-US',
             format: 'YYYY-MM-DD',
             closeOnDateClick: false,
-            useSeconds: false,
+            useSeconds: false
           }"
         />
         v-model: {{ value2 }} (milliseconds)
@@ -51,21 +51,21 @@
         <v-text-field-datetimepicker
           v-model="value3"
           label="Date Time Picker"
-          v-bind:properties="{
+          :properties="{
             backgroundColor: '',
             clearable: false,
-            outlined: false,
+            variant: variant,
             prependIcon: '',
             appendIcon: ''
           }"
-          v-bind:options="{
+          :options="{
             tabDateTitle: 'Date',
             tabTimeTitle: 'Time',
             tabBackgroundColor: 'red',
             locale: 'en-US',
             format: 'YYYY-MM-DD',
             closeOnDateClick: false,
-            useSeconds: true,
+            useSeconds: true
           }"
         />
         v-model: {{ value3 }} (milliseconds)
@@ -78,16 +78,23 @@
 import DateTimePicker from "@/components/DateTimePicker.vue";
 
 export default {
+  props: {
+    variant: String,
+    persistentClear: {
+      type: Boolean,
+      default: true
+    }
+  },
   name: "app",
   components: {
-    "v-text-field-datetimepicker": DateTimePicker,
+    "v-text-field-datetimepicker": DateTimePicker
   },
   data: () => ({
     value1: 1558220700000,
 
     value2: 1558220700000,
 
-    value3: 1558220710000,
-  }),
+    value3: 1558220710000
+  })
 };
 </script>

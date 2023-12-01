@@ -1,27 +1,36 @@
 <template>
-  <div>
-    <v-text-field-negative-money
-      v-model="value"
-      v-bind:label="label"
-      v-bind:properties="{
-        prefix: 'R$ ' + signal,
-        readonly: false,
-        disabled: disabled,
-        outlined: false,
-        clearable: true,
-        placeholder: ' ',
-      }"
-      v-bind:options="{
-        locale: 'pt-BR',
-        length: 11,
-        precision: 2,
-        empty: null,
-      }"
-      v-on:signal="signal = $event"
-      ref="ref"
-    />
+  <v-text-field-negative-money
+    v-model="value"
+    v-model:signal="signal"
+    :label="label"
+    :properties="{
+      prefix: 'R$ ' + signal,
+      readonly: false,
+      disabled: disabled,
+      variant: variant,
+      persistentClear: persistentClear,
+      clearable: true,
+      placeholder: ''
+    }"
+    :options="{
+      locale: 'pt-BR',
+      length: 11,
+      precision: 2,
+      empty: null
+    }"
+    ref="ref"
+  />
+  <div class="d-flex justify-space-between align-center">
     v-model:
-    {{ value !== null && value !== "" ? value : value === null ? "null" : value === "" ? "''" : "" }}<br />
+    {{
+      value !== null && value !== ""
+        ? value
+        : value === null
+          ? "null"
+          : value === ""
+            ? "''"
+            : ""
+    }}<br />
     signal: {{ signal }}
   </div>
 </template>
@@ -30,14 +39,21 @@
 import NegativeMoney from "@/components/NegativeDecimal.vue";
 
 export default {
+  props: {
+    variant: String,
+    persistentClear: {
+      type: Boolean,
+      default: true
+    }
+  },
   components: {
-    "v-text-field-negative-money": NegativeMoney,
+    "v-text-field-negative-money": NegativeMoney
   },
   data: () => ({
-    value: -123456789.0, // 1.23 or "1.23" or "" or null
+    value: -123456789.0, // -1.23 or "-1.23" or "" or null
     label: "Negative Money",
     disabled: false,
-    signal: "",
-  }),
+    signal: ""
+  })
 };
 </script>

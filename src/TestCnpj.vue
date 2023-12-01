@@ -1,29 +1,30 @@
 <template>
-  <div>
-    <v-text-field-cnpj
-      v-model="value"
-      v-bind:label="label"
-      v-bind:properties="{
-        disabled: false,
-        outlined: true,
-        clearable: true,
-        placeholder: '',
-      }"
-      v-bind:options="{
-        outputMask: '##############',
-        empty: null,
-        applyAfter: true,
-      }"
-    />
+  <v-text-field-cnpj
+    v-model="value"
+    :label="label"
+    :properties="{
+      disabled: false,
+      variant: variant,
+      persistentClear: persistentClear,
+      clearable: true,
+      placeholder: '',
+      appendInnerIcon: 'mdi-check'
+    }"
+    :options="{
+      outputMask: '##############',
+      empty: null
+    }"
+  />
+  <div class="d-flex justify-space-between align-center">
     v-model:
     {{
       value !== null && value !== ""
         ? value
         : value === null
-        ? "null"
-        : value === ""
-        ? "''"
-        : ""
+          ? "null"
+          : value === ""
+            ? "''"
+            : ""
     }}
   </div>
 </template>
@@ -32,12 +33,19 @@
 import Cnpj from "@/components/Cnpj.vue";
 
 export default {
+  props: {
+    variant: String,
+    persistentClear: {
+      type: Boolean,
+      default: true
+    }
+  },
   components: {
-    "v-text-field-cnpj": Cnpj,
+    "v-text-field-cnpj": Cnpj
   },
   data: () => ({
     value: "50703512000192", // 123 or "123" or "" or null
-    label: "CNPJ (Brazilian mask)",
-  }),
+    label: "CNPJ (Brazilian mask) - icon-append-inner prop"
+  })
 };
 </script>

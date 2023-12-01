@@ -28,7 +28,8 @@ echo
 echo "Copiando arquivos...";
 cp package.json npm;
 cp README.md npm;
-cp src/components/* npm;
+cp src/components/* npm/src/components;
+cp lib/* npm;
 echo "Copiado.";
 if [ $1 = "-pk" ];
 then
