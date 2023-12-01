@@ -1,56 +1,77 @@
 <template>
-  <div>
-    <v-text-field
-      v-model="cmpValue"
-      v-bind:label="label"
-      v-bind="properties"
-      v-bind:maxlength="inputMask.length"
-      v-bind:append-icon="options.applyAfter && value ? 'mdi-check-circle' : ''"
-      v-bind:success="options.applyAfter && value ? true : false"
-      v-on:keypress="keyPress"
-      v-on:blur="$emit('blur')"
-      v-on:change="$emit('change')"
-      v-on:click="$emit('click')"
-      v-on:focus="$emit('focus')"
-      v-on:keydown="$emit('keydown')"
-      v-on:mousedown="$emit('mousedown')"
-      v-on:mouseup="$emit('mouseup')"
-      ref="ref"
-    ></v-text-field>
-  </div>
+  <v-text-field
+    v-bind="properties"
+    v-model="cmpValue"
+    :modelModifiers="{
+      lazy: modelModifiers.lazy
+    }"
+    :label="label"
+    :maxlength="inputMask.length"
+    :base-color="statusColor"
+    @blur="$emit('blur')"
+    @click="$emit('click')"
+    @focus="$emit('focus')"
+    @keydown="keyDown"
+    @mousedown="$emit('mousedown')"
+    @mouseup="$emit('mouseup')"
+    ref="ref"
+  >
+    <template v-for="(_, name) in $slots" v-slot:[name]="slotData">
+      <slot :name="name" v-bind="slotData" />
+    </template>
+    <template v-if="!properties.appendInnerIcon" #append-inner="props">
+      <slot name="append-inner" v-bind="props">
+        <v-icon v-if="success" :color="statusColor" icon="mdi-check-circle" />
+      </slot>
+    </template>
+  </v-text-field>
 </template>
 
 <script>
 export default {
-  model: { prop: "value", event: "input" },
+  name: "VTextFieldCpf",
+  emits: [
+    "update:modelValue",
+    "update:masked",
+    "blur",
+    "click",
+    "focus",
+    "keydown",
+    "mousedown",
+    "mouseup"
+  ],
   props: {
-    value: {
+    modelValue: {
       type: [String, Number],
-      default: "0",
+      default: "0"
+    },
+    modelModifiers: {
+      type: Object,
+      default: () => ({})
     },
     label: {
       type: String,
-      default: "",
+      default: ""
     },
     properties: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
-      },
+      }
     },
     options: {
       type: Object,
-      default: function() {
+      default: function () {
         return {
           outputMask: "###########",
-          empty: "",
-          applyAfter: false,
+          empty: ""
         };
-      },
-    },
+      }
+    }
   },
   data: () => ({
-    inputMask: "###.###.###-##",
+    internalValue: "",
+    inputMask: "###.###.###-##"
   }),
   /*
    v-model="cmpValue": Dessa forma, ao digitar, o valor é atualizado automaticamente no componente pai.
@@ -58,17 +79,25 @@ export default {
   */
   computed: {
     cmpValue: {
-      get: function() {
-        return this.humanFormat(this.value);
+      get: function () {
+        return this.humanFormat(this.modelValue) || this.internalValue;
       },
-      set: function(newValue) {
-        this.$emit("input", this.machineFormat(newValue));
-      },
+      set: function (newValue) {
+        this.internalValue = newValue;
+        this.$emit("update:modelValue", this.machineFormat(newValue));
+      }
     },
+    success: function () {
+      return this.modelValue && this.cmpValue.length === this.inputMask.length;
+    },
+    statusColor: function () {
+      if (this.properties.baseColor) return this.properties.baseColor;
+      return this.success ? "success" : null;
+    }
   },
   watch: {},
   methods: {
-    humanFormat: function(value) {
+    humanFormat: function (value) {
       if (value) {
         value = this.formatValue(value, this.inputMask);
       } else {
@@ -77,22 +106,22 @@ export default {
       return value;
     },
 
-    machineFormat(value) {
+    machineFormat: function (value) {
       if (value) {
         value = this.formatValue(value, this.options.outputMask);
         if (value === "") {
           value = this.options.empty;
         }
         // Apply the mask only only after filling
-        if (this.options.applyAfter) {
-          if (value.length !== this.options.outputMask.length) {
+        if (this.modelModifiers.lazy) {
+          if (value.length < this.options.outputMask.length) {
             value = this.options.empty;
           } else {
             if (!this.validateCpf(value)) {
               value = this.options.empty;
             } else {
               // Event sended after filling the mask
-              this.$emit("masked");
+              this.$emit("update:masked");
             }
           }
         }
@@ -102,11 +131,11 @@ export default {
       return value;
     },
 
-    formatValue: function(value, mask) {
+    formatValue: function (value, mask) {
       return this.formatCpf(value, mask);
     },
 
-    formatCpf: function(value, mask) {
+    formatCpf: function (value, mask) {
       value = this.clearValue(value);
       let result = "";
       let count = 0;
@@ -127,17 +156,23 @@ export default {
       return result;
     },
 
-    keyPress($event) {
-      // console.log($event.keyCode); //keyCodes value
+    keyDown: function ($event) {
+      this.$emit("keydown", $event);
+
       let keyCode = $event.keyCode ? $event.keyCode : $event.which;
-      // if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
-      if (keyCode < 48 || keyCode > 57) {
-        // 46 is dot
+
+      // backspace
+      if (keyCode === 8 && this.success) {
+        this.cmpValue = this.options.empty;
+        return;
+      }
+
+      if ((keyCode < 48 || keyCode > 57) && keyCode !== 8) {
         $event.preventDefault();
       }
     },
 
-    clearValue: function(value) {
+    clearValue: function (value) {
       let result = "";
       if (value) {
         let arrayValue = value.toString().split("");
@@ -150,7 +185,7 @@ export default {
       return result;
     },
 
-    isInteger(value) {
+    isInteger: function (value) {
       let result = false;
       if (Number.isInteger(parseInt(value))) {
         result = true;
@@ -158,44 +193,36 @@ export default {
       return result;
     },
 
-    focus() {
+    focus: function () {
       setTimeout(() => {
         this.$refs.ref.focus();
       }, 500);
     },
 
-    validateCpf: function(cpf) {
+    validateCpf: function (cpf) {
       cpf = cpf.replace(/[^\d]+/g, "");
       if (cpf == "") return false;
+
       // Eliminar CPFs invalidos conhecidos
-      if (
-        cpf.length != 11 ||
-        cpf == "00000000000" ||
-        cpf == "11111111111" ||
-        cpf == "22222222222" ||
-        cpf == "33333333333" ||
-        cpf == "44444444444" ||
-        cpf == "55555555555" ||
-        cpf == "66666666666" ||
-        cpf == "77777777777" ||
-        cpf == "88888888888" ||
-        cpf == "99999999999"
-      )
-        return false;
+      if (cpf.split("").every(char => char === cpf[0])) return false;
+
       // Validar 1o digito
       let add = 0;
+      let rev = 0;
+
       for (var i = 0; i < 9; i++) add += parseInt(cpf.charAt(i)) * (10 - i);
       rev = 11 - (add % 11);
       if (rev == 10 || rev == 11) rev = 0;
       if (rev != parseInt(cpf.charAt(9))) return false;
+
       // Validar 2o digito
       add = 0;
       for (var j = 0; j < 10; j++) add += parseInt(cpf.charAt(j)) * (11 - j);
-      let rev = 11 - (add % 11);
+      rev = 11 - (add % 11);
       if (rev == 10 || rev == 11) rev = 0;
       if (rev != parseInt(cpf.charAt(10))) return false;
       return true;
-    },
-  },
+    }
+  }
 };
 </script>

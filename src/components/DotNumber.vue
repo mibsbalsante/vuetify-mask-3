@@ -1,70 +1,89 @@
 <template>
-  <div>
-    <v-text-field
-      v-model="cmpValue"
-      v-bind:label="label"
-      v-bind="properties"
-      v-bind:maxlength="options.length"
-      v-on:keypress="keyPress"
-      v-on:blur="$emit('blur')"
-      v-on:change="$emit('change')"
-      v-on:click="$emit('click')"
-      v-on:focus="$emit('focus')"
-      v-on:keydown="$emit('keydown')"
-      v-on:mousedown="$emit('mousedown')"
-      v-on:mouseup="$emit('mouseup')"
-      ref="ref"
-    ></v-text-field>
-  </div>
+  <v-text-field
+    v-bind="properties"
+    v-model="cmpValue"
+    :modelModifiers="{
+      lazy: modelModifiers.lazy
+    }"
+    :label="label"
+    :maxlength="options.length"
+    @blur="$emit('blur')"
+    @click="$emit('click')"
+    @focus="$emit('focus')"
+    @keydown="keyDown"
+    @mousedown="$emit('mousedown')"
+    @mouseup="$emit('mouseup')"
+    ref="ref"
+  >
+    <template v-for="(_, name) in $slots" v-slot:[name]="slotData">
+      <slot :name="name" v-bind="slotData" />
+    </template>
+  </v-text-field>
 </template>
 
 <script>
 export default {
-  model: { prop: "value", event: "input" },
+  name: "VTextFieldDotNumber",
+  emits: [
+    "update:modelValue",
+    "update:masked",
+    "blur",
+    "click",
+    "focus",
+    "keydown",
+    "mousedown",
+    "mouseup"
+  ],
   props: {
-    value: {
+    modelValue: {
       type: [String, Number],
-      default: "0",
+      default: "0"
+    },
+    modelModifiers: {
+      type: Object,
+      default: () => ({})
     },
     label: {
       type: String,
-      default: "",
+      default: ""
     },
     properties: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
-      },
+      }
     },
     options: {
       type: Object,
-      default: function() {
+      default: function () {
         return {
           length: 10,
-          empty: "",
-          applyAfter: false,
+          empty: ""
         };
-      },
-    },
+      }
+    }
   },
-  data: () => ({}),
+  data: () => ({
+    internalValue: ""
+  }),
   /*
    v-model="cmpValue": Dessa forma, ao digitar, o valor é atualizado automaticamente no componente pai.
    O valor digitado entra pelo newValue do Set é emitido para o componente pai, retorna pelo get e pára.
   */
   computed: {
     cmpValue: {
-      get: function() {
-        return this.humanFormat(this.value);
+      get: function () {
+        return this.humanFormat(this.modelValue) || this.internalValue;
       },
-      set: function(newValue) {
-        this.$emit("input", this.machineFormat(newValue));
-      },
-    },
+      set: function (newValue) {
+        this.internalValue = newValue;
+        this.$emit("update:modelValue", this.machineFormat(newValue));
+      }
+    }
   },
   watch: {},
   methods: {
-    humanFormat: function(value) {
+    humanFormat: function (value) {
       if (value) {
         value = this.formatValue(value);
       } else {
@@ -73,19 +92,19 @@ export default {
       return value;
     },
 
-    machineFormat(value) {
+    machineFormat: function (value) {
       if (value) {
         value = this.formatValue(value);
         if (value === "") {
           value = this.options.empty;
         }
         // Apply the mask only only after filling
-        if (this.options.applyAfter) {
+        if (this.modelModifiers.lazy) {
           if (value.length !== this.options.length) {
             value = this.options.empty;
           } else {
             // Event sended after filling the mask
-            this.$emit("masked");
+            this.$emit("update:masked");
           }
         }
       } else {
@@ -94,21 +113,21 @@ export default {
       return value;
     },
 
-    formatValue: function(value) {
+    formatValue: function (value) {
       return value;
     },
 
-    keyPress($event) {
-      // console.log($event.keyCode); //keyCodes value
+    keyDown: function ($event) {
+      this.$emit("keydown", $event);
+
       let keyCode = $event.keyCode ? $event.keyCode : $event.which;
-      if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
-        // if (keyCode < 48 || keyCode > 57) {
-        // 46 is dot
+
+      if ((keyCode < 48 || keyCode > 57) && keyCode !== 8) {
         $event.preventDefault();
       }
     },
 
-    clearValue: function(value) {
+    clearValue: function (value) {
       let result = "";
       if (value) {
         let arrayValue = value.toString().split("");
@@ -121,7 +140,7 @@ export default {
       return result;
     },
 
-    isInteger(value) {
+    isInteger: function (value) {
       let result = false;
       if (Number.isInteger(parseInt(value))) {
         result = true;
@@ -129,12 +148,11 @@ export default {
       return result;
     },
 
-    focus() {
+    focus: function () {
       setTimeout(() => {
         this.$refs.ref.focus();
       }, 500);
-    },
-    
-  },
+    }
+  }
 };
 </script>

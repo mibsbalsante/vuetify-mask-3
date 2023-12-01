@@ -1,7 +1,7 @@
 import Decimal from "./Decimal.vue";
 import Integer from "./Integer.vue";
 import DateTime from "./DateTime.vue";
-import DateTimePicker from "./DateTimePicker.vue";
+//import DateTimePicker from "./DateTimePicker.vue";
 import SimpleMask from "./SimpleMask.vue";
 import Cpf from "./Cpf.vue";
 import Cnpj from "./Cnpj.vue";
@@ -14,7 +14,7 @@ function install(app) {
   app.component("v-text-field-percent", Decimal);
   app.component("v-text-field-integer", Integer);
   app.component("v-text-field-datetime", DateTime);
-  app.component("v-text-field-datetimepicker", DateTimePicker);
+  //app.component("v-text-field-datetimepicker", DateTimePicker);
   app.component("v-text-field-simplemask", SimpleMask);
   app.component("v-text-field-cpf", Cpf);
   app.component("v-text-field-cnpj", Cnpj);

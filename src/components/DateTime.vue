@@ -1,76 +1,100 @@
 <template>
-  <div>
-    <v-text-field
-      v-model="cmpValue"
-      v-bind:label="label"
-      v-bind="properties"
-      v-bind:maxlength="options.inputMask.length"
-      v-bind:append-icon="(value) ? 'mdi-check-circle' : ''"
-      v-bind:success="(value) ? true : false"
-      v-on:keypress="keyPress"
-      v-on:blur="$emit('blur')"
-      v-on:change="$emit('change')"
-      v-on:click="$emit('click')"
-      v-on:focus="$emit('focus')"
-      v-on:keydown="$emit('keydown')"
-      v-on:mousedown="$emit('mousedown')"
-      v-on:mouseup="$emit('mouseup')"
-      ref="ref"
-    ></v-text-field>
-  </div>
+  <v-text-field
+    v-bind="properties"
+    v-model="cmpValue"
+    :label="label"
+    :maxlength="options.inputMask.length"
+    :base-color="statusColor"
+    @blur="$emit('blur')"
+    @click="$emit('click')"
+    @focus="$emit('focus')"
+    @keydown="keyDown"
+    @mousedown="$emit('mousedown')"
+    @mouseup="$emit('mouseup')"
+    ref="ref"
+  >
+    <template v-for="(_, name) in $slots" v-slot:[name]="slotData">
+      <slot :name="name" v-bind="slotData" />
+    </template>
+    <template v-if="!properties.appendInnerIcon" #append-inner="props">
+      <slot name="append-inner" v-bind="props">
+        <v-icon v-if="success" :color="statusColor" icon="mdi-check-circle" />
+      </slot>
+    </template>
+  </v-text-field>
 </template>
 
 <script>
-import moment from "moment";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 export default {
-  model: { prop: "value", event: "input" },
+  emits: [
+    "update:modelValue",
+    "update:masked",
+    "blur",
+    "click",
+    "focus",
+    "keydown",
+    "mousedown",
+    "mouseup"
+  ],
   props: {
-    value: {
+    modelValue: {
       type: [String, Number],
-      default: "0",
+      default: "0"
     },
     label: {
       type: String,
-      default: "",
+      default: ""
     },
     properties: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
-      },
+      }
     },
     options: {
       type: Object,
-      default: function() {
+      default: function () {
         return {
           inputMask: "YYYY-MM-DD HH:mm:ss",
-          empty: "",
+          empty: ""
         };
-      },
-    },
+      }
+    }
   },
-  data: () => ({}),
+  data: () => ({
+    internalValue: ""
+  }),
   /*
    v-model="cmpValue": Dessa forma, ao digitar, o valor é atualizado automaticamente no componente pai.
    O valor digitado entra pelo newValue do Set é emitido para o componente pai, retorna pelo get e pára.
   */
   computed: {
     cmpValue: {
-      get: function() {
-        return this.humanFormat(this.value);
+      get: function () {
+        return this.humanFormat(this.modelValue) || this.internalValue;
       },
-      set: function(newValue) {
-        this.$emit("input", this.machineFormat(newValue));
-      },
+      set: function (newValue) {
+        this.internalValue = newValue;
+        this.$emit("update:modelValue", this.machineFormat(newValue));
+      }
     },
+    success: function () {
+      return this.modelValue;
+    },
+    statusColor: function () {
+      if (this.properties.baseColor) return this.properties.baseColor;
+      return this.success ? "success" : null;
+    }
   },
-  watch: {
-  },
+  watch: {},
   methods: {
-    humanFormat: function(value) {
+    humanFormat: function (value) {
       if (value) {
-        value = moment(this.toDate(this.toInteger(value))).format(
+        value = dayjs(this.toDate(this.toInteger(value))).format(
           this.options.inputMask
         );
       } else {
@@ -79,7 +103,7 @@ export default {
       return value;
     },
 
-    machineFormat(value) {
+    machineFormat: function (value) {
       if (value) {
         value = this.formatValue(value, this.options.inputMask);
         if (value === "") {
@@ -89,7 +113,7 @@ export default {
           if (value.length !== this.options.inputMask.length) {
             value = this.options.empty;
           } else {
-            let stringDate = moment(value, this.options.inputMask).format(
+            let stringDate = dayjs(value, this.options.inputMask).format(
               "YYYY-MM-DD HH:mm:ss"
             );
             value = this.toMillisecond(stringDate);
@@ -97,7 +121,7 @@ export default {
               value = this.options.empty;
             } else {
               // Event sended after filling the mask
-              this.$emit("masked");
+              this.$emit("update:masked");
             }
           }
         }
@@ -107,11 +131,11 @@ export default {
       return value;
     },
 
-    formatValue: function(value, mask) {
+    formatValue: function (value, mask) {
       return this.formatDate(value, mask);
     },
 
-    formatDate: function(value, mask) {
+    formatDate: function (value, mask) {
       value = this.clearValue(value);
       let result = "";
       let count = 0;
@@ -120,14 +144,7 @@ export default {
         let arrayMask = mask.toString().split("");
         for (var i = 0; i < arrayMask.length; i++) {
           if (i < arrayValue.length + count) {
-            if (
-              arrayMask[i].toLowerCase().includes("y") ||
-              arrayMask[i].toLowerCase().includes("m") ||
-              arrayMask[i].toLowerCase().includes("d") ||
-              arrayMask[i].toLowerCase().includes("h") ||
-              arrayMask[i].toLowerCase().includes("m") ||
-              arrayMask[i].toLowerCase().includes("s")
-            ) {
+            if (/[ymdhs]/.test(arrayMask[i].toLowerCase())) {
               result = result + arrayValue[i - count];
             } else {
               result = result + arrayMask[i];
@@ -139,17 +156,17 @@ export default {
       return result;
     },
 
-    keyPress($event) {
-      // console.log($event.keyCode); //keyCodes value
+    keyDown: function ($event) {
+      this.$emit("keydown", $event);
+
       let keyCode = $event.keyCode ? $event.keyCode : $event.which;
-      // if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
-      if (keyCode < 48 || keyCode > 57) {
-        // 46 is dot
+
+      if ((keyCode < 48 || keyCode > 57) && keyCode !== 8) {
         $event.preventDefault();
       }
     },
 
-    clearValue: function(value) {
+    clearValue: function (value) {
       let result = "";
       if (value) {
         let arrayValue = value.toString().split("");
@@ -162,7 +179,7 @@ export default {
       return result;
     },
 
-    isInteger(value) {
+    isInteger: function (value) {
       let result = false;
       if (Number.isInteger(parseInt(value))) {
         result = true;
@@ -175,21 +192,20 @@ export default {
     },
 
     /* String Date to Milliseconds */
-    toMillisecond: function(value) {
+    toMillisecond: function (value) {
       return Date.parse(value);
     },
 
     /* Milliseconds to Date*/
-    toDate: function(value) {
+    toDate: function (value) {
       return new Date(value); // Return String
     },
 
-    focus() {
+    focus: function () {
       setTimeout(() => {
         this.$refs.ref.focus();
       }, 500);
-    },
-
-  },
+    }
+  }
 };
 </script>
